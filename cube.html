@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수상한 큐브 시뮬레이터</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            position: relative;
+        }
+        #results {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+        }
+        .stat {
+            margin: 10px 0;
+        }
+        #volumeControl {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>수상한 큐브 시뮬레이터</h1>
+    <button id="rollButton" onclick="rollCube()">큐브 돌리기</button>
+    <div id="results">
+        <div class="stat" id="stat1"></div>
+        <div class="stat" id="stat2"></div>
+        <div class="stat" id="stat3"></div>
+    </div>
+    <div id="volumeControl">
+        <label for="volume">볼륨:</label>
+        <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5" onchange="adjustVolume()">
+    </div>
+    <audio id="backgroundMusic" src="sounds/FloralLife.mp3" autoplay loop></audio>
+    <audio id="effectSound" src="sounds/cube_effect.mp3"></audio>
+
+    <script>
+        function rollCube() {
+            const potentialStats = [
+                "STR +6%",
+                "DEX +6%",
+                "INT +6%",
+                "LUK +6%",
+                "공격력 +6%",
+                "마력 +6%",
+                "크리티컬 확률 +8%",
+                "보스 공격력 +10%",
+                "피해 감소 +10%",
+                "아이템 드롭률 +10%"
+            ];
+
+            const stat1 = randomStat(potentialStats);
+            const stat2 = randomStat(potentialStats);
+            const stat3 = randomStat(potentialStats);
+
+            document.getElementById('stat1').innerText = `잠재 능력 1: ${stat1}`;
+            document.getElementById('stat2').innerText = `잠재 능력 2: ${stat2}`;
+            document.getElementById('stat3').innerText = `잠재 능력 3: ${stat3}`;
+
+            document.getElementById('effectSound').play();
+
+            if (stat1 === stat2 && stat2 === stat3) {
+                alert('축하합니다! 같은 잠재 능력 3개가 떴습니다!');
+                document.getElementById('rollButton').disabled = true;
+            }
+        }
+
+        function randomStat(stats) {
+            return stats[Math.floor(Math.random() * stats.length)];
+        }
+
+        function adjustVolume() {
+            const volume = document.getElementById('volume').value;
+            document.getElementById('backgroundMusic').volume = volume;
+        }
+
+        window.onload = function() {
+            document.getElementById('backgroundMusic').volume = 0.5;
+        }
+    </script>
+</body>
+</html>
